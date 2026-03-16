@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Task | Study Tracker{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+    <div class="panel-card narrow-card">
+        <p class="eyebrow">Delete task</p>
+        <h1 class="h3 mb-3">Remove "{{ task.title }}"?</h1>
+        <p class="text-secondary">This action deletes the task and its reminder. Use it only for finished or incorrect entries.</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex gap-2">
+                <button class="btn btn-danger" type="submit">Delete task</button>
+                <a class="btn btn-outline-dark" href="{% url 'dashboard' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

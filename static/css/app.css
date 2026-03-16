@@ -1,0 +1,147 @@
+:root {
+    --bg: #f4efe7;
+    --ink: #1f2933;
+    --muted: #5b6470;
+    --panel: rgba(255, 255, 255, 0.88);
+    --accent: #bf5f3c;
+    --accent-dark: #8b4025;
+    --line: rgba(31, 41, 51, 0.08);
+}
+
+body {
+    background:
+        radial-gradient(circle at top right, rgba(191, 95, 60, 0.18), transparent 22rem),
+        linear-gradient(180deg, #f8f3eb 0%, #f1ece4 100%);
+    color: var(--ink);
+    min-height: 100vh;
+}
+
+.app-nav {
+    background: rgba(31, 41, 51, 0.92);
+    backdrop-filter: blur(12px);
+}
+
+.btn-accent {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.btn-accent:hover,
+.btn-accent:focus {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+    color: #fff;
+}
+
+.hero-panel,
+.panel-card,
+.auth-card,
+.feature-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 20px 60px rgba(31, 41, 51, 0.08);
+}
+
+.hero-panel {
+    padding: 2rem;
+}
+
+.auth-shell,
+.form-shell {
+    display: flex;
+    justify-content: center;
+}
+
+.auth-card {
+    max-width: 540px;
+    width: 100%;
+}
+
+.narrow-card {
+    max-width: 620px;
+    width: 100%;
+}
+
+.subpanel-card,
+.stats-card,
+.task-card,
+.history-row,
+.empty-state,
+.timeline-entry {
+    background: rgba(255, 255, 255, 0.76);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.stats-card strong {
+    display: block;
+    font-size: 2rem;
+    margin-top: 0.35rem;
+}
+
+.eyebrow {
+    color: var(--accent-dark);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+}
+
+.feature-list,
+.timeline-list {
+    display: grid;
+    gap: 0.75rem;
+    padding-left: 1.2rem;
+}
+
+.task-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.history-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.skip-link {
+    position: absolute;
+    left: -999px;
+    top: auto;
+}
+
+.skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    background: #fff;
+    color: #000;
+    padding: 0.75rem 1rem;
+    z-index: 1000;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus,
+.btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(191, 95, 60, 0.25);
+}
+
+@media (max-width: 767px) {
+    .hero-panel,
+    .panel-card,
+    .auth-card,
+    .feature-card {
+        padding: 1.25rem;
+    }
+
+    .history-row {
+        flex-direction: column;
+    }
+}

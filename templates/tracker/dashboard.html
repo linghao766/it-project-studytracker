@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | Study Tracker{% endblock %}
+
+{% block content %}
+<section class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <p class="eyebrow">Welcome back</p>
+        <h1 class="h2 mb-1">{{ user.username }}'s study dashboard</h1>
+        <p class="text-secondary mb-0">Manage tasks, update status instantly, and keep daily reminders focused on the right study goal.</p>
+    </div>
+    <a class="btn btn-accent" href="{% url 'task_create' %}">Add new task</a>
+</section>
+
+<section class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-3"><div class="stats-card"><span>Pending</span><strong id="pendingCount">{{ pending_count }}</strong></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="stats-card"><span>Completed</span><strong id="completedCount">{{ completed_count }}</strong></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="stats-card"><span>Active reminders</span><strong>{{ reminder_count }}</strong></div></div>
+    <div class="col-sm-6 col-xl-3"><div class="stats-card"><span>History entries</span><strong>{{ history_count }}</strong></div></div>
+</section>
+
+<section class="row g-4">
+    <div class="col-lg-8">
+        <div class="panel-card">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                <div>
+                    <h2 class="h4 mb-1">Current tasks</h2>
+                    <p class="text-secondary mb-0">Use search or status filters without reloading the page.</p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <label class="visually-hidden" for="taskSearch">Search tasks</label>
+                    <input id="taskSearch" class="form-control" type="search" placeholder="Search tasks">
+                    <label class="visually-hidden" for="statusFilter">Filter by status</label>
+                    <select id="statusFilter" class="form-select">
+                        <option value="all">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="taskList" class="task-list" aria-live="polite">
+                {% for task in tasks %}
+                    <article class="task-card" data-status="{{ task.status }}" data-search="{{ task.title|lower }} {{ task.description|lower }}">
+                        <div class="d-flex justify-content-between gap-3 flex-wrap">
+                            <div>
+                                <span class="badge text-bg-light border">{{ task.get_status_display }}</span>
+                                <h3 class="h5 mt-2 mb-1">{{ task.title }}</h3>
+                                <p class="text-secondary mb-2">{{ task.description|default:'No additional notes provided.' }}</p>
+                                <div class="small text-secondary d-flex flex-wrap gap-3">
+                                    <span>Created {{ task.created_at|date:'d M Y H:i' }}</span>
+                                    <span>Due {{ task.due_date|date:'d M Y'|default:'Not set' }}</span>
+                                    {% if task.reminder %}
+                                        <span>Reminder {{ task.reminder.reminder_time|time:'H:i' }}{% if task.reminder.is_active %} active{% endif %}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column gap-2">
+                                <button class="btn btn-outline-dark btn-sm js-toggle-status" data-url="{% url 'task_toggle_status' task.pk %}">
+                                    {% if task.is_completed %}Mark pending{% else %}Mark completed{% endif %}
+                                </button>
+                                <a class="btn btn-outline-secondary btn-sm" href="{% url 'task_update' task.pk %}">Edit</a>
+                                <a class="btn btn-outline-danger btn-sm" href="{% url 'task_delete' task.pk %}">Delete</a>
+                            </div>
+                        </div>
+                    </article>
+                {% empty %}
+                    <div class="empty-state">
+                        <h3 class="h5">No tasks yet</h3>
+                        <p class="mb-0 text-secondary">Add your first study task to begin tracking progress.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="panel-card h-100">
+            <h2 class="h4 mb-3">Recent activity</h2>
+            <div class="timeline-list">
+                {% for task in recent_activity %}
+                    <div class="timeline-entry">
+                        <strong>{{ task.title }}</strong>
+                        <span>{{ task.get_status_display }} on {{ task.updated_at|date:'d M Y H:i' }}</span>
+                    </div>
+                {% empty %}
+                    <p class="text-secondary mb-0">Activity will appear once you start updating tasks.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
