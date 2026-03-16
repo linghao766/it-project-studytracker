@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}History | Study Tracker{% endblock %}
+
+{% block content %}
+<section class="d-flex justify-content-between flex-wrap gap-3 align-items-center mb-4">
+    <div>
+        <p class="eyebrow">Study history</p>
+        <h1 class="h2 mb-1">Completed tasks</h1>
+        <p class="text-secondary mb-0">Review finished study goals to evaluate consistency and throughput over time.</p>
+    </div>
+    <a class="btn btn-outline-dark" href="{% url 'dashboard' %}">Back to dashboard</a>
+</section>
+
+<div class="panel-card">
+    {% for task in tasks %}
+        <div class="history-row">
+            <div>
+                <h2 class="h5 mb-1">{{ task.title }}</h2>
+                <p class="text-secondary mb-1">{{ task.description|default:'No notes recorded.' }}</p>
+                <small class="text-secondary">Created {{ task.created_at|date:'d M Y H:i' }}</small>
+            </div>
+            <div class="text-md-end">
+                <span class="badge text-bg-success">Completed</span>
+                {% if task.reminder %}
+                    <p class="small text-secondary mt-2 mb-0">Reminder set for {{ task.reminder.reminder_time|time:'H:i' }}</p>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="empty-state">
+            <h2 class="h5">No completed tasks yet</h2>
+            <p class="mb-0 text-secondary">Once you mark tasks as completed, they will appear here.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
